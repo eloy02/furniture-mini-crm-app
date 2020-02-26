@@ -3,3 +3,7 @@
 
 **Приложение находится на стадии разработки!**
 
+Платформа приложения - [AvaloniaUI](https://github.com/AvaloniaUI/Avalonia)  
+MVVM фреймворк - [ReactiveUI](https://reactiveui.net/)   
+
+В целях экономии времени, для хранения данных используется локальная файловая база [LiteDB](https://www.litedb.org/).
