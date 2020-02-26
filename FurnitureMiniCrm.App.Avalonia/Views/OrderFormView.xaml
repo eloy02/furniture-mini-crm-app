@@ -1,0 +1,104 @@
+﻿<UserControl
+    x:Class="FurnitureMiniCrm.App.Avalonia.Views.OrderFormView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:vm="clr-namespace:FurnitureMiniCrm.App.Core.ViewModels;assembly=FurnitureMiniCrm.App.Core"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+  <!--<Design.DataContext>
+    <vm:OrderFormViewModel />
+  </Design.DataContext>-->
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <StackPanel
+        Grid.Row="0"
+        Margin="10"
+        Spacing="10">
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <StackPanel>
+          <TextBlock>Номер заказа</TextBlock>
+          <TextBox Width="150" IsReadOnly="True" />
+        </StackPanel>
+
+        <StackPanel>
+          <TextBlock>Дата заказа</TextBlock>
+          <DatePicker />
+        </StackPanel>
+
+        <StackPanel>
+          <TextBlock>Cумма заказа</TextBlock>
+          <TextBox Width="100" IsReadOnly="True" />
+        </StackPanel>
+      </StackPanel>
+
+      <StackPanel Orientation="Horizontal" Spacing="10">
+        <StackPanel>
+          <TextBlock>Клиент</TextBlock>
+          <StackPanel Orientation="Horizontal">
+            <TextBox Width="200" IsReadOnly="True" />
+            <Button
+                Width="30"
+                Margin="5,0"
+                Command="{Binding SelectClientCommand}">
+              ...
+            </Button>
+          </StackPanel>
+        </StackPanel>
+
+        <StackPanel>
+          <TextBlock>Статус заказа</TextBlock>
+          <ComboBox Width="200" Height="25" />
+        </StackPanel>
+      </StackPanel>
+
+      <StackPanel
+          HorizontalAlignment="Left"
+          Orientation="Horizontal"
+          Spacing="10">
+        <Button>Сохранить</Button>
+        <Button>Отмена</Button>
+      </StackPanel>
+    </StackPanel>
+
+    <Grid Grid.Row="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <TextBlock>Товары</TextBlock>
+
+      <StackPanel
+          Grid.Row="1"
+          Margin="10"
+          Orientation="Horizontal"
+          Spacing="10">
+        <Button Command="{Binding SelectProductCommand}">Добавить</Button>
+        <Button>Убрать</Button>
+      </StackPanel>
+
+      <DataGrid Grid.Row="2">
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="Артикул" IsReadOnly="True" />
+          <DataGridTextColumn Header="Наименование" IsReadOnly="True" />
+          <DataGridTextColumn Header="Группа" IsReadOnly="True" />
+          <DataGridTextColumn Header="Цена продажи" IsReadOnly="True" />
+          <DataGridTextColumn Header="Ед. изм" IsReadOnly="True" />
+          <DataGridTextColumn Header="Кол-во" />
+          <DataGridTextColumn Header="Сумма" />
+        </DataGrid.Columns>
+      </DataGrid>
+    </Grid>
+  </Grid>
+</UserControl>

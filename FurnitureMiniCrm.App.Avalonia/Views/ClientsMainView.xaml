@@ -1,0 +1,130 @@
+﻿<UserControl
+    x:Class="FurnitureMiniCrm.App.Avalonia.Views.ClientsMainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:vm="clr-namespace:FurnitureMiniCrm.App.Core.ViewModels;assembly=FurnitureMiniCrm.App.Core"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+  <!--<Design.DataContext>
+    <vm:ClientsMainViewModel />
+  </Design.DataContext>-->
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height=".6*" />
+      <RowDefinition Height=".4*" />
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <TextBlock>Список клиентов</TextBlock>
+
+      <DockPanel Grid.Row="1">
+        <StackPanel
+            Margin="10"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal"
+            Spacing="10">
+          <Button Command="{Binding CreateClient}">Новый клиент</Button>
+
+          <Button Command="{Binding EditClient}">Редактировать</Button>
+        </StackPanel>
+
+        <DataGrid
+            AutoGenerateColumns="False"
+            GridLinesVisibility="All"
+            HeadersVisibility="All"
+            Items="{Binding Clients}"
+            SelectedItem="{Binding SelectedClient, Mode=TwoWay}"
+            SelectionMode="Single">
+          <DataGrid.Columns>
+            <DataGridTextColumn
+                Binding="{Binding Fio}"
+                Header="ФИО"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding Address}"
+                Header="Адрес"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding PhoneNumber}"
+                Header="Телефон"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding EmailAddress}"
+                Header="Email"
+                IsReadOnly="True" />
+            <DataGridTemplateColumn Width="150" Header="Комментарии">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate>
+                  <TextBlock
+                      Text="{Binding Comments}"
+                      TextAlignment="Left"
+                      TextWrapping="Wrap" />
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+      </DockPanel>
+    </Grid>
+
+    <Grid Grid.Row="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <TextBlock>Заказы клиента</TextBlock>
+
+      <DockPanel Grid.Row="1">
+        <StackPanel
+            Margin="10"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal"
+            Spacing="10">
+          <Button>Новый заказ</Button>
+
+          <Button>Просмотр заказа</Button>
+        </StackPanel>
+
+        <DataGrid
+            AutoGenerateColumns="False"
+            GridLinesVisibility="All"
+            HeadersVisibility="All"
+            Items="{Binding ClientOrders}"
+            SelectedItem="{Binding SelectedClientOrder, Mode=TwoWay}"
+            SelectionMode="Single">
+          <DataGrid.Columns>
+            <DataGridTextColumn
+                Binding="{Binding Id}"
+                Header="№ Заказа"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding CreateDate, StringFormat=dd.MM.yyyy}"
+                Header="Дата заказа"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding Sum}"
+                Header="Сумма заказа"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding Status.Name}"
+                Header="Статус заказа"
+                IsReadOnly="True" />
+          </DataGrid.Columns>
+        </DataGrid>
+      </DockPanel>
+    </Grid>
+  </Grid>
+</UserControl>

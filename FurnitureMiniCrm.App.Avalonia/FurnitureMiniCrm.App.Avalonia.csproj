@@ -1,0 +1,98 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <AvaloniaResource Include="**\*.xaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Remove="Assets\clients.svg" />
+    <AvaloniaResource Remove="Views\ClientFormView.xaml" />
+    <AvaloniaResource Remove="Views\ClientsMainView.xaml" />
+    <AvaloniaResource Remove="Views\OrderFormView.xaml" />
+    <AvaloniaResource Remove="Views\OrdersMainView.xaml" />
+    <AvaloniaResource Remove="Views\ProductFormView.xaml" />
+    <AvaloniaResource Remove="Views\ProductsMainView.xaml" />
+    <AvaloniaResource Remove="Views\SelectClientView.xaml" />
+    <AvaloniaResource Remove="Views\SelectProductView.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Views\ClientFormView.xaml" />
+    <None Remove="Views\ClientsMainView.xaml" />
+    <None Remove="Views\OrderFormView.xaml" />
+    <None Remove="Views\OrdersMainView.xaml" />
+    <None Remove="Views\ProductFormView.xaml" />
+    <None Remove="Views\ProductsMainView.xaml" />
+    <None Remove="Views\SelectClientView.xaml" />
+    <None Remove="Views\SelectProductView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.9.3" />
+    <PackageReference Include="Avalonia.Controls.DataGrid" Version="0.9.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.3" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ClientsMainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\OrdersMainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ProductsMainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\OrderFormView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ClientFormView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ProductFormView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SelectClientView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SelectProductView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FurnitureMiniCrm.App.Core\FurnitureMiniCrm.App.Core.csproj" />
+  </ItemGroup>
+    <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+</Project>

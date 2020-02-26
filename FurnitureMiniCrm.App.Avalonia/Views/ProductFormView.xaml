@@ -1,0 +1,83 @@
+﻿<UserControl
+    x:Class="FurnitureMiniCrm.App.Avalonia.Views.ProductFormView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+  <Grid>
+    <StackPanel>
+      <WrapPanel>
+        <StackPanel Margin="5">
+          <TextBlock>Артикул</TextBlock>
+          <TextBox Width="150" Text="{Binding ProductCode}" />
+        </StackPanel>
+
+        <StackPanel Margin="5">
+          <TextBlock>Наименование</TextBlock>
+          <TextBox Width="200" Text="{Binding ProductName}" />
+        </StackPanel>
+
+        <StackPanel Margin="5">
+          <TextBlock>Группа</TextBlock>
+          <ComboBox
+              Width="150"
+              Height="25"
+              Items="{Binding ProductGroups}"
+              SelectedItem="{Binding SelectedProductGroup}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}" />
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+        </StackPanel>
+
+        <StackPanel Margin="5">
+          <TextBlock>Статус</TextBlock>
+          <ComboBox
+              Width="150"
+              Height="25"
+              Items="{Binding ProductStatuses}"
+              SelectedItem="{Binding SelectedProductStatus}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Name}" />
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+        </StackPanel>
+      </WrapPanel>
+
+      <WrapPanel>
+        <StackPanel Margin="5">
+          <TextBlock>Ед. измерения</TextBlock>
+          <TextBox Width="100" Text="{Binding ProductUnit}" />
+        </StackPanel>
+      </WrapPanel>
+
+      <WrapPanel>
+        <StackPanel Margin="5">
+          <TextBlock>Цена</TextBlock>
+          <NumericUpDown Width="100"  Value="{Binding ProductPrice}" />
+        </StackPanel>
+
+        <StackPanel Margin="5">
+          <TextBlock>Цена продажи</TextBlock>
+          <NumericUpDown Width="100" Value="{Binding ProductSellPrice}" />
+        </StackPanel>
+      </WrapPanel>
+
+      <StackPanel
+          HorizontalAlignment="Right"
+          Orientation="Horizontal"
+          Spacing="10">
+        <Button Command="{Binding SaveProduct}">Сохранить</Button>
+        <Button Command="{Binding Cancel}">Отмена</Button>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</UserControl>

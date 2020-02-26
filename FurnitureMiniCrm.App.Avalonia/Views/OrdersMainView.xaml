@@ -1,0 +1,83 @@
+﻿<UserControl
+    x:Class="FurnitureMiniCrm.App.Avalonia.Views.OrdersMainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:vm="clr-namespace:FurnitureMiniCrm.App.Core.ViewModels;assembly=FurnitureMiniCrm.App.Core"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+  <!--<Design.DataContext>
+    <vm:OrdersMainViewModel />
+  </Design.DataContext>-->
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height=".6*" />
+      <RowDefinition Height=".4*" />
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <TextBlock Grid.Row="0">Список заказов</TextBlock>
+
+      <DockPanel Grid.Row="1">
+        <StackPanel
+            Margin="10"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal"
+            Spacing="10">
+          <Button>Новый заказ</Button>
+
+          <Button>Редактировать</Button>
+        </StackPanel>
+
+        <DataGrid
+            AutoGenerateColumns="False"
+            GridLinesVisibility="All"
+            HeadersVisibility="All"
+            SelectionMode="Single">
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="№ Заказа" IsReadOnly="True" />
+            <DataGridTextColumn Header="Дата заказа" IsReadOnly="True" />
+            <DataGridTextColumn Header="Клиент" IsReadOnly="True" />
+            <DataGridTextColumn Header="Сумма заказа" IsReadOnly="True" />
+            <DataGridTextColumn Header="Статус заказа" IsReadOnly="True" />
+          </DataGrid.Columns>
+        </DataGrid>
+      </DockPanel>
+    </Grid>
+
+    <Grid Grid.Row="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <TextBlock Grid.Row="0">Заказанные товары</TextBlock>
+
+      <DataGrid
+          Grid.Row="1"
+          AutoGenerateColumns="False"
+          GridLinesVisibility="All"
+          HeadersVisibility="All"
+          SelectionMode="Single">
+        <DataGrid.Columns>
+          <DataGridTextColumn Header="Артикул" IsReadOnly="True" />
+          <DataGridTextColumn Header="Наименование" IsReadOnly="True" />
+          <DataGridTextColumn Header="Ед. изм" IsReadOnly="True" />
+          <DataGridTextColumn Header="Цена продажи" IsReadOnly="True" />
+          <DataGridTextColumn Header="Кол-во" IsReadOnly="True" />
+          <DataGridTextColumn Header="Сумма" IsReadOnly="True" />
+        </DataGrid.Columns>
+      </DataGrid>
+    </Grid>
+  </Grid>
+</UserControl>

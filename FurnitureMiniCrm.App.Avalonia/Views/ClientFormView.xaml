@@ -1,0 +1,90 @@
+﻿<UserControl
+    x:Class="FurnitureMiniCrm.App.Avalonia.Views.ClientFormView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:vm="clr-namespace:FurnitureMiniCrm.App.Core.ViewModels;assembly=FurnitureMiniCrm.App.Core"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
+    </Grid.RowDefinitions>
+
+    <StackPanel>
+      <WrapPanel>
+        <StackPanel Margin="10">
+          <TextBlock>Фамилия</TextBlock>
+          <TextBox Width="200" Text="{Binding LastName}" />
+        </StackPanel>
+
+        <StackPanel Margin="10">
+          <TextBlock>Имя</TextBlock>
+          <TextBox Width="200" Text="{Binding FirstName}" />
+        </StackPanel>
+
+        <StackPanel Margin="10">
+          <TextBlock>Отчество</TextBlock>
+          <TextBox Width="200" Text="{Binding PatronymicName}" />
+        </StackPanel>
+      </WrapPanel>
+
+      <WrapPanel>
+        <StackPanel Margin="10">
+          <TextBlock>Город</TextBlock>
+          <TextBox Width="200" Text="{Binding City}" />
+        </StackPanel>
+
+        <StackPanel Margin="10">
+          <TextBlock>Улица</TextBlock>
+          <TextBox Width="200" Text="{Binding Street}" />
+        </StackPanel>
+
+        <StackPanel Margin="10">
+          <TextBlock>Дом</TextBlock>
+          <TextBox Width="100" Text="{Binding Building}" />
+        </StackPanel>
+
+        <StackPanel Margin="10">
+          <TextBlock>Квартира</TextBlock>
+          <TextBox Width="100" Text="{Binding Flat}" />
+        </StackPanel>
+      </WrapPanel>
+
+      <WrapPanel>
+        <StackPanel Margin="10">
+          <TextBlock>Номер телефона</TextBlock>
+          <TextBox Width="200" Text="{Binding PhoneNumber}" />
+        </StackPanel>
+
+        <StackPanel Margin="10">
+          <TextBlock>Email</TextBlock>
+          <TextBox Width="250" Text="{Binding Email}" />
+        </StackPanel>
+      </WrapPanel>
+
+      <StackPanel Margin="10">
+        <TextBlock>Комментарии</TextBlock>
+        <TextBox
+            Width="250"
+            Height="100"
+            HorizontalAlignment="Left"
+            Text="{Binding Comments}" />
+      </StackPanel>
+    </StackPanel>
+
+    <StackPanel
+        Grid.Row="1"
+        Margin="0,30"
+        HorizontalAlignment="Center"
+        Orientation="Horizontal"
+        Spacing="10">
+      <Button Command="{Binding SaveClient}">Сохранить</Button>
+      <Button Command="{Binding Cancel}">Отмена</Button>
+    </StackPanel>
+  </Grid>
+</UserControl>

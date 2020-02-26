@@ -1,0 +1,48 @@
+﻿<Window
+    x:Class="FurnitureMiniCrm.App.Avalonia.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:vm="clr-namespace:FurnitureMiniCrm.App.Core.ViewModels;assembly=FurnitureMiniCrm.App.Core"
+    Title="Учет заказов"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Icon="/Assets/avalonia-logo.ico"
+    mc:Ignorable="d">
+
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+
+  <Grid>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Border Background="LightBlue">
+
+      <StackPanel
+          Margin="10"
+          Orientation="Horizontal"
+          Spacing="15">
+        <Button Classes="Primary button" Command="{Binding CreateOrder}">Новый заказ</Button>
+        <Button Command="{Binding OpenOrders}">Заказы</Button>
+        <Button Command="{Binding OpenClients}">Клиенты</Button>
+        <Button Command="{Binding OpenProducts}">Товары</Button>
+      </StackPanel>
+    </Border>
+
+    <reactiveUi:RoutedViewHost
+        Grid.Row="1"
+        Padding="10"
+        Router="{Binding Router}">
+      <reactiveUi:RoutedViewHost.DefaultContent>
+        <TextBlock Text="Default Content" />
+      </reactiveUi:RoutedViewHost.DefaultContent>
+    </reactiveUi:RoutedViewHost>
+  </Grid>
+</Window>
