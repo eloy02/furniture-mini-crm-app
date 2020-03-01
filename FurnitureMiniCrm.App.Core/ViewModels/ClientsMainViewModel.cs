@@ -1,14 +1,14 @@
-﻿using DynamicData;
-using FurnitureMiniCrm.Services;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Splat;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
+using DynamicData;
+using FurnitureMiniCrm.Services;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace FurnitureMiniCrm.App.Core.ViewModels
 {
@@ -29,6 +29,9 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
         public ReactiveCommand<Unit, IRoutableViewModel> CreateClient { get; }
         public ReactiveCommand<Unit, IRoutableViewModel> EditClient { get; }
+        public ReactiveCommand<Unit, IRoutableViewModel> NewOrderForClient { get; }
+        public ReactiveCommand<Unit, IRoutableViewModel> EditClientOrder { get; }
+
         public ReadOnlyObservableCollection<ClientModel> Clients => _clients;
         public ReadOnlyObservableCollection<OrderModel> ClientOrders => _clientOrders;
 
@@ -60,13 +63,22 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             CreateClient = ReactiveCommand.CreateFromObservable(() =>
                 HostScreen.Router.Navigate.Execute(new ClientFormViewModel(HostScreen)));
 
-            IObservable<bool> canEditClient = this.WhenAnyValue(x => x.SelectedClient)
+            var canEditClient = this.WhenAnyValue(x => x.SelectedClient)
                 .Select(client => client != null);
 
             EditClient = ReactiveCommand.CreateFromObservable(() =>
                 HostScreen.Router.Navigate.Execute(new ClientFormViewModel(HostScreen, SelectedClient)), canEditClient);
 
-            ReactiveCommand<Unit, System.Collections.Generic.IEnumerable<ClientModel>> loadClients = ReactiveCommand.CreateFromTask(async () => await _clientsService.GetClientsAsync());
+            NewOrderForClient = ReactiveCommand.CreateFromObservable(() =>
+                HostScreen.Router.Navigate.Execute(new OrderFormViewModel(HostScreen, SelectedClient)), canEditClient);
+
+            var canEditClientOrder = this.WhenAnyValue(x => x.SelectedClientOrder)
+                    .Select(order => order != null);
+
+            EditClientOrder = ReactiveCommand.CreateFromObservable(() =>
+                HostScreen.Router.Navigate.Execute(new OrderFormViewModel(HostScreen, orderForEdit: SelectedClientOrder)), canEditClientOrder);
+
+            var loadClients = ReactiveCommand.CreateFromTask(async () => await _clientsService.GetClientsAsync());
 
             _clientsSource
                 .Connect()

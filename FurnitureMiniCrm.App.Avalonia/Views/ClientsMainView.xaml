@@ -93,9 +93,9 @@
             DockPanel.Dock="Top"
             Orientation="Horizontal"
             Spacing="10">
-          <Button>Новый заказ</Button>
+          <Button Command="{Binding NewOrderForClient}">Новый заказ</Button>
 
-          <Button>Просмотр заказа</Button>
+          <Button Command="{Binding EditClientOrder}">Просмотр заказа</Button>
         </StackPanel>
 
         <DataGrid
