@@ -1,13 +1,13 @@
-﻿using DynamicData;
-using FurnitureMiniCrm.Services;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Splat;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using DynamicData;
+using FurnitureMiniCrm.Services;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace FurnitureMiniCrm.App.Core.ViewModels
 {
@@ -40,7 +40,9 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             Activator = new ViewModelActivator();
 
             if (HostScreen is null)
+            {
                 HostScreen = Locator.Current.GetService<IScreen>();
+            }
 
             _ordersService = Locator.Current.GetService<IOrdersService>();
 
@@ -78,6 +80,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                 _ordersSource.PopulateFrom(loadOrders.Execute());
 
                 this.WhenAnyValue(x => x.SelectedOrder)
+                    .Do(_ => _orderItemsSource.Clear())
                     .Where(order => order != null)
                     .Select(order => order.Products)
                     .Subscribe(orderItems => _orderItemsSource.AddOrUpdate(orderItems))
@@ -85,7 +88,10 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
                 Disposable.Create(() =>
                 {
-                    _ordersSource.Clear();
+                    _ordersSource?.Clear();
+                    _orderItemsSource?.Clear();
+
+                    SelectedOrder = null;
                 }).DisposeWith(disposables);
             });
         }

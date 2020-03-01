@@ -44,7 +44,7 @@
             GridLinesVisibility="All"
             HeadersVisibility="All"
             Items="{Binding Orders}"
-            SelectedItem="{Binding SelectedOrder, Mode=OneWayToSource}"
+            SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
             SelectionMode="Single">
           <DataGrid.Columns>
             <DataGridTextColumn

@@ -1,10 +1,12 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using FurnitureMiniCrm.App.Core.ViewModels;
+using ReactiveUI;
 
 namespace FurnitureMiniCrm.App.Avalonia.Views
 {
-    public class MainWindow : Window
+    public class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
         public MainWindow()
         {
@@ -12,6 +14,8 @@ namespace FurnitureMiniCrm.App.Avalonia.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
+
+            this.WhenActivated(disposables => { });
         }
 
         private void InitializeComponent()
