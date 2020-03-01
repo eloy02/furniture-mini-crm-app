@@ -14,7 +14,7 @@ namespace FurnitureMiniCrm.Services
         public int Id { get; set; }
         public ProductModel Product { get; set; }
         public int Count { get; set; }
-        public decimal TotalPrice { get; set; }
+        public double TotalPrice { get; set; }
     }
 
     public class OrderModel
@@ -24,6 +24,6 @@ namespace FurnitureMiniCrm.Services
         public OrderStatusModel Status { get; set; }
         public ClientModel Client { get; set; }
         public List<OrderProductModel> Products { get; set; }
-        public decimal Sum { get; set; }
+        public double Sum { get; set; }
     }
 }

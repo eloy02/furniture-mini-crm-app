@@ -22,6 +22,7 @@ namespace FurnitureMiniCrm.App.Avalonia.Views
                     {
                         var selectClientView = new SelectClientView()
                         {
+                            DataContext = interaction.Input,
                             ViewModel = interaction.Input
                         };
 
@@ -39,6 +40,7 @@ namespace FurnitureMiniCrm.App.Avalonia.Views
                     {
                         var selectProductView = new SelectProductView()
                         {
+                            DataContext = interaction.Input,
                             ViewModel = interaction.Input
                         };
 

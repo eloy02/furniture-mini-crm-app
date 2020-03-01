@@ -2,6 +2,8 @@
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using FurnitureMiniCrm.App.Core.ViewModels;
+using ReactiveUI;
+using System.Reactive.Disposables;
 
 namespace FurnitureMiniCrm.App.Avalonia.Views
 {
@@ -13,6 +15,17 @@ namespace FurnitureMiniCrm.App.Avalonia.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
+
+            this.WhenActivated(disposables =>
+            {
+                this.ViewModel.Close.RegisterHandler(interaction =>
+                {
+                    if (interaction.Input == true)
+                        Close();
+
+                    interaction.SetOutput(new System.Reactive.Unit());
+                }).DisposeWith(disposables);
+            });
         }
 
         private void InitializeComponent()

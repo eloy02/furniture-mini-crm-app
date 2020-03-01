@@ -14,6 +14,8 @@ namespace FurnitureMiniCrm.Services
 
         Task<OrderModel> GetOrderAsync(int id);
 
+        Task<OrderModel> CreateNewOrder();
+
         Task SetOrderAsync(OrderModel order);
 
         IObservable<OrderModel> NewOrders { get; }

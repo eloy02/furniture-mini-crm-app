@@ -27,12 +27,12 @@
         <WrapPanel>
           <StackPanel Margin="5">
             <TextBlock>ФИО</TextBlock>
-            <TextBox Width="150" />
+            <TextBox Width="150" Text="{Binding Fio}" />
           </StackPanel>
 
           <StackPanel Margin="5">
             <TextBlock>№ Телефона</TextBlock>
-            <TextBox Width="150" />
+            <TextBox Width="150" Text="{Binding PhoneNumber}" />
           </StackPanel>
         </WrapPanel>
       </StackPanel>
@@ -42,11 +42,22 @@
         Grid.Row="1"
         Margin="0,10"
         AutoGenerateColumns="False"
+        Items="{Binding Clients}"
+        SelectedItem="{Binding SelectedClient, Mode=TwoWay}"
         SelectionMode="Single">
       <DataGrid.Columns>
-        <DataGridTextColumn Header="ФИО" IsReadOnly="True" />
-        <DataGridTextColumn Header="№ Телефона" IsReadOnly="True" />
-        <DataGridTextColumn Header="Адрес" IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding Fio}"
+            Header="ФИО"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding PhoneNumber}"
+            Header="№ Телефона"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding Address}"
+            Header="Адрес"
+            IsReadOnly="True" />
       </DataGrid.Columns>
     </DataGrid>
 
@@ -56,8 +67,8 @@
         HorizontalAlignment="Right"
         Orientation="Horizontal"
         Spacing="10">
-      <Button>Выбрать</Button>
-      <Button>Отмена</Button>
+      <Button Command="{Binding SelectClient}">Выбрать</Button>
+      <!--<Button x:Name="Cancel">Отмена</Button>-->
     </StackPanel>
   </Grid>
 </Window>

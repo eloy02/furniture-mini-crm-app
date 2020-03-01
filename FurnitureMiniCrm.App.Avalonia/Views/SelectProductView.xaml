@@ -27,17 +27,27 @@
         <WrapPanel>
           <StackPanel Margin="5">
             <TextBlock>Артикул</TextBlock>
-            <TextBox Width="150" />
+            <TextBox Width="150" Text="{Binding CodeName}" />
           </StackPanel>
 
           <StackPanel Margin="5">
             <TextBlock>Наименование товара</TextBlock>
-            <TextBox Width="150" />
+            <TextBox Width="150" Text="{Binding Name}" />
           </StackPanel>
 
           <StackPanel Margin="5">
             <TextBlock>Группа</TextBlock>
-            <ComboBox Width="150" Height="26" />
+            <ComboBox
+                Width="150"
+                Height="26"
+                Items="{Binding ProductGroups}"
+                SelectedItem="{Binding SelectedProductGroup}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
           </StackPanel>
         </WrapPanel>
       </StackPanel>
@@ -47,14 +57,28 @@
         Grid.Row="1"
         Margin="0,10"
         AutoGenerateColumns="True"
+        Items="{Binding Products}"
+        SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
         SelectionMode="Single">
       <DataGrid.Columns>
-        <DataGridTextColumn Header="Артикул" IsReadOnly="True" />
-        <DataGridTextColumn Header="Наименование" IsReadOnly="True" />
-        <DataGridTextColumn Header="Группа" IsReadOnly="True" />
-        <DataGridTextColumn Header="Цена продажи" IsReadOnly="True" />
-        <DataGridTextColumn Header="Размер" IsReadOnly="True" />
-        <DataGridTextColumn Header="Цвет" IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding CodeName}"
+            Header="Артикул"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding Name}"
+            Header="Наименование"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding Group.Name}"
+            Header="Группа"
+            IsReadOnly="True" />
+        <DataGridTextColumn
+            Binding="{Binding SellPrice}"
+            Header="Цена продажи"
+            IsReadOnly="True" />
+        <!--<DataGridTextColumn Header="Размер" IsReadOnly="True" />-->
+        <!--<DataGridTextColumn Header="Цвет" IsReadOnly="True" />-->
       </DataGrid.Columns>
     </DataGrid>
 
@@ -64,8 +88,8 @@
         HorizontalAlignment="Right"
         Orientation="Horizontal"
         Spacing="10">
-      <Button>Выбрать</Button>
-      <Button>Отмена</Button>
+      <Button Command="{Binding SelectProduct}">Выбрать</Button>
+      <!--<Button>Отмена</Button>-->
     </StackPanel>
   </Grid>
 </Window>

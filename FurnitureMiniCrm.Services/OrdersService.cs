@@ -11,7 +11,9 @@ namespace FurnitureMiniCrm.Services
     {
         private readonly Subject<OrderModel> _newOrders = new Subject<OrderModel>();
 
-        public Task<IEnumerable<OrderModel>> GetOrdersAsync() => Task.FromResult(Get<OrderModel>());
+        public Task<IEnumerable<OrderModel>> GetOrdersAsync() =>
+            Task.FromResult(Get<OrderModel>()
+                                .Where(x => x.Status != null));
 
         public Task<IEnumerable<OrderStatusModel>> GetOrderStatusesAsync()
         {
@@ -85,6 +87,27 @@ namespace FurnitureMiniCrm.Services
                 .ToList();
 
             return Task.FromResult(orders.AsEnumerable());
+        }
+
+        public Task<OrderModel> CreateNewOrder()
+        {
+            using var db = new LiteDatabase(dbPath);
+
+            var col = db.GetCollection<OrderModel>();
+
+            col.DeleteMany(x => x.Status == null);
+
+            var count = col.Count();
+
+            var newOrder = new OrderModel()
+            {
+                Id = count + 1,
+                CreateDate = DateTime.Now
+            };
+
+            col.Insert(newOrder);
+
+            return Task.FromResult(newOrder);
         }
     }
 }
