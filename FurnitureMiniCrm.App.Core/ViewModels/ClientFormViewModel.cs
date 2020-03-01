@@ -1,8 +1,10 @@
-﻿using FurnitureMiniCrm.Services;
+﻿using System;
+using System.Reactive;
+using System.Reactive.Disposables;
+using FurnitureMiniCrm.Services;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
-using System.Reactive;
 
 namespace FurnitureMiniCrm.App.Core.ViewModels
 {
@@ -123,24 +125,33 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
             Cancel = ReactiveCommand.CreateFromObservable(() => HostScreen.Router.NavigateBack.Execute());
 
-            if (IsEditMode && clientForEdit != null)
+            var loadClientForEdit = ReactiveCommand.CreateFromTask(async () => await _clientsService.GetClientAsync(clientForEdit.Id));
+
+            this.WhenActivated(disposables =>
             {
-                LastName = clientForEdit.LastName;
-                FirstName = clientForEdit.FirstName;
-                PatronymicName = clientForEdit.PatronymicName;
-                PhoneNumber = clientForEdit.PhoneNumber;
-                Email = clientForEdit.EmailAddress;
-                Comments = clientForEdit.Comments;
+                if (IsEditMode)
+                {
+                    loadClientForEdit
+                        .Execute()
+                        .Subscribe(client =>
+                        {
+                            clientForEdit = client;
 
-                City = clientForEdit.Address.City;
-                Street = clientForEdit.Address.Street;
-                Building = clientForEdit.Address.BuildingNumber;
-                Flat = clientForEdit.Address.FlatNumber;
-            }
+                            LastName = clientForEdit.LastName;
+                            FirstName = clientForEdit.FirstName;
+                            PatronymicName = clientForEdit.PatronymicName;
+                            PhoneNumber = clientForEdit.PhoneNumber;
+                            Email = clientForEdit.EmailAddress;
+                            Comments = clientForEdit.Comments;
 
-            //this.WhenActivated(disposables =>
-            //{
-            //});
+                            City = clientForEdit.Address.City;
+                            Street = clientForEdit.Address.Street;
+                            Building = clientForEdit.Address.BuildingNumber;
+                            Flat = clientForEdit.Address.FlatNumber;
+                        })
+                        .DisposeWith(disposables);
+                }
+            });
         }
     }
 }
