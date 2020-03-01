@@ -92,7 +92,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
         [Reactive]
         public OrderItemViewModel SelectedProduct { get; set; }
 
-        public OrderFormViewModel(IScreen hostScreen = null, ClientModel clientForOrder = null)
+        public OrderFormViewModel(IScreen hostScreen = null, ClientModel clientForOrder = null, OrderModel orderForEdit = null)
         {
             HostScreen = hostScreen;
 
@@ -155,20 +155,6 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
             this.WhenActivated(disposables =>
             {
-                CreateDate = DateTime.Now;
-
-                getNewOrder
-                    .Execute()
-                    .Subscribe(order => Order = order)
-                    .DisposeWith(disposables);
-
-                loadOrderStatuses
-                    .Execute()
-                    .Select(statuses => new ObservableCollection<OrderStatusModel>(statuses))
-                    .ObserveOn(RxApp.MainThreadScheduler)
-                    .Subscribe(statuses => OrderStatuses = statuses)
-                    .DisposeWith(disposables);
-
                 this.WhenAnyValue(x => x.Order)
                     .Where(order => order != null)
                     .ObserveOn(RxApp.MainThreadScheduler)
@@ -191,6 +177,32 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                     .Subscribe(status => SelectedOrderStatus = status)
                     .DisposeWith(disposables);
 
+                this.WhenAnyValue(x => x.OrderStatuses)
+                    .Where(statuses => statuses != null)
+                    .Where(_ => Order.Status != null)
+                    .Select(statuses => statuses.SingleOrDefault(st => st.Id == Order.Status.Id))
+                    .ObserveOn(RxApp.MainThreadScheduler)
+                    .Subscribe(status => SelectedOrderStatus = status)
+                    .DisposeWith(disposables);
+
+                if (orderForEdit != null)
+                    Order = orderForEdit;
+
+                if (orderForEdit is null)
+                {
+                    getNewOrder
+                        .Execute()
+                        .Subscribe(order => Order = order)
+                        .DisposeWith(disposables);
+                }
+
+                loadOrderStatuses
+                    .Execute()
+                    .Select(statuses => new ObservableCollection<OrderStatusModel>(statuses))
+                    .ObserveOn(RxApp.MainThreadScheduler)
+                    .Subscribe(statuses => OrderStatuses = statuses)
+                    .DisposeWith(disposables);
+
                 if (clientForOrder != null)
                 {
                     SelectedClient = clientForOrder;
@@ -198,7 +210,8 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
                 Observable.Timer(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.3))
                     .Select(_ => _orderItemsSource.Items.Sum(x => x.TotalPrice))
-                    .Subscribe(totalSum => OrderSumm = totalSum);
+                    .Subscribe(totalSum => OrderSumm = totalSum)
+                    .DisposeWith(disposables);
 
                 Disposable.Create(() =>
                 {

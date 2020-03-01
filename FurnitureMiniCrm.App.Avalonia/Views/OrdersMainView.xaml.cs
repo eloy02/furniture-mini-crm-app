@@ -1,6 +1,7 @@
 ﻿using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using FurnitureMiniCrm.App.Core.ViewModels;
+using ReactiveUI;
 
 namespace FurnitureMiniCrm.App.Avalonia.Views
 {
@@ -9,6 +10,8 @@ namespace FurnitureMiniCrm.App.Avalonia.Views
         public OrdersMainView()
         {
             this.InitializeComponent();
+
+            this.WhenActivated(disposables => { });
         }
 
         private void InitializeComponent()

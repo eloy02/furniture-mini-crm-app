@@ -34,22 +34,39 @@
             DockPanel.Dock="Top"
             Orientation="Horizontal"
             Spacing="10">
-          <Button>Новый заказ</Button>
+          <Button Command="{Binding CreateNewOrder}">Новый заказ</Button>
 
-          <Button>Редактировать</Button>
+          <Button Command="{Binding EditOrder}">Редактировать</Button>
         </StackPanel>
 
         <DataGrid
             AutoGenerateColumns="False"
             GridLinesVisibility="All"
             HeadersVisibility="All"
+            Items="{Binding Orders}"
+            SelectedItem="{Binding SelectedOrder, Mode=OneWayToSource}"
             SelectionMode="Single">
           <DataGrid.Columns>
-            <DataGridTextColumn Header="№ Заказа" IsReadOnly="True" />
-            <DataGridTextColumn Header="Дата заказа" IsReadOnly="True" />
-            <DataGridTextColumn Header="Клиент" IsReadOnly="True" />
-            <DataGridTextColumn Header="Сумма заказа" IsReadOnly="True" />
-            <DataGridTextColumn Header="Статус заказа" IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding Id}"
+                Header="№ Заказа"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding CreateDate}"
+                Header="Дата заказа"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding Client.Fio}"
+                Header="Клиент"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding Sum}"
+                Header="Сумма заказа"
+                IsReadOnly="True" />
+            <DataGridTextColumn
+                Binding="{Binding Status.Name}"
+                Header="Статус заказа"
+                IsReadOnly="True" />
           </DataGrid.Columns>
         </DataGrid>
       </DockPanel>
@@ -68,14 +85,33 @@
           AutoGenerateColumns="False"
           GridLinesVisibility="All"
           HeadersVisibility="All"
+          Items="{Binding OrderItems}"
           SelectionMode="Single">
         <DataGrid.Columns>
-          <DataGridTextColumn Header="Артикул" IsReadOnly="True" />
-          <DataGridTextColumn Header="Наименование" IsReadOnly="True" />
-          <DataGridTextColumn Header="Ед. изм" IsReadOnly="True" />
-          <DataGridTextColumn Header="Цена продажи" IsReadOnly="True" />
-          <DataGridTextColumn Header="Кол-во" IsReadOnly="True" />
-          <DataGridTextColumn Header="Сумма" IsReadOnly="True" />
+          <DataGridTextColumn
+              Binding="{Binding Product.CodeName}"
+              Header="Артикул"
+              IsReadOnly="True" />
+          <DataGridTextColumn
+              Binding="{Binding Product.Name}"
+              Header="Наименование"
+              IsReadOnly="True" />
+          <DataGridTextColumn
+              Binding="{Binding Product.Unit}"
+              Header="Ед. изм"
+              IsReadOnly="True" />
+          <DataGridTextColumn
+              Binding="{Binding Product.SellPrice}"
+              Header="Цена продажи"
+              IsReadOnly="True" />
+          <DataGridTextColumn
+              Binding="{Binding Count}"
+              Header="Кол-во"
+              IsReadOnly="True" />
+          <DataGridTextColumn
+              Binding="{Binding TotalPrice}"
+              Header="Сумма"
+              IsReadOnly="True" />
         </DataGrid.Columns>
       </DataGrid>
     </Grid>
