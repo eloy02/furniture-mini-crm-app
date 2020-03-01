@@ -1,14 +1,17 @@
-﻿using LiteDB;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using LiteDB;
 
 namespace FurnitureMiniCrm.Services
 {
     public class ServiceBase
     {
-        private protected readonly string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "database.db");
+        private protected readonly string dbPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            "furniturecrm",
+            "database.db");
 
         private protected IEnumerable<T> Get<T>() where T : class
         {
