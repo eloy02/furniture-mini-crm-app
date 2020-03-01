@@ -13,6 +13,16 @@ namespace FurnitureMiniCrm.Services
             "furniturecrm",
             "database.db");
 
+        public ServiceBase()
+        {
+            var dbDir = Path.GetDirectoryName(dbPath);
+
+            if (!Directory.Exists(dbDir))
+            {
+                Directory.CreateDirectory(dbDir);
+            }
+        }
+
         private protected IEnumerable<T> Get<T>() where T : class
         {
             using var db = new LiteDatabase(dbPath);

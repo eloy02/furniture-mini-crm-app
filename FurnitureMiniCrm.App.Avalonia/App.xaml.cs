@@ -23,6 +23,7 @@ namespace FurnitureMiniCrm.App.Avalonia
                 desktop.MainWindow = new MainWindow
                 {
                     DataContext = new MainWindowViewModel(),
+                    ViewModel = new MainWindowViewModel(),
                 };
             }
 
