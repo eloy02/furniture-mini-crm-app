@@ -15,8 +15,6 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
     {
         private readonly IProductsService _productsService;
 
-        private readonly ProductModel editingProduct;
-
         public string UrlPathSegment => "/products/form";
 
         public IScreen HostScreen { get; }
@@ -71,9 +69,11 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             Activator = new ViewModelActivator();
 
             if (productForEdit != null)
+            {
                 IsEditingMode = true;
+            }
 
-            var canSaveProduct = this.WhenAnyValue(
+            IObservable<bool> canSaveProduct = this.WhenAnyValue(
                 x => x.ProductName,
                 x => x.ProductCode,
                 x => x.ProductUnit,
@@ -125,9 +125,9 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
             Cancel = ReactiveCommand.CreateFromObservable(() => HostScreen.Router.NavigateBack.Execute());
 
-            var loadStatuses = ReactiveCommand.CreateFromTask(() => _productsService.GetProductStatusesAsync());
+            ReactiveCommand<Unit, System.Collections.Generic.IEnumerable<ProductStatusModel>> loadStatuses = ReactiveCommand.CreateFromTask(() => _productsService.GetProductStatusesAsync());
 
-            var loadGroups = ReactiveCommand.CreateFromTask(() => _productsService.GetProductGroupsAsync());
+            ReactiveCommand<Unit, System.Collections.Generic.IEnumerable<ProductGroupModel>> loadGroups = ReactiveCommand.CreateFromTask(() => _productsService.GetProductGroupsAsync());
 
             this.WhenActivated(disposables =>
             {

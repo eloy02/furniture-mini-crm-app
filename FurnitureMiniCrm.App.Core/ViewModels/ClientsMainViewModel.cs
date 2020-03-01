@@ -43,7 +43,9 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             HostScreen = hostScreen;
 
             if (HostScreen is null)
+            {
                 HostScreen = Locator.Current.GetService<IScreen>();
+            }
 
             _clientsService = Locator.Current.GetService<IClientsService>();
 
@@ -58,13 +60,13 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             CreateClient = ReactiveCommand.CreateFromObservable(() =>
                 HostScreen.Router.Navigate.Execute(new ClientFormViewModel(HostScreen)));
 
-            var canEditClient = this.WhenAnyValue(x => x.SelectedClient)
+            IObservable<bool> canEditClient = this.WhenAnyValue(x => x.SelectedClient)
                 .Select(client => client != null);
 
             EditClient = ReactiveCommand.CreateFromObservable(() =>
                 HostScreen.Router.Navigate.Execute(new ClientFormViewModel(HostScreen, SelectedClient)), canEditClient);
 
-            var loadClients = ReactiveCommand.CreateFromTask(async () => await _clientsService.GetClientsAsync());
+            ReactiveCommand<Unit, System.Collections.Generic.IEnumerable<ClientModel>> loadClients = ReactiveCommand.CreateFromTask(async () => await _clientsService.GetClientsAsync());
 
             _clientsSource
                 .Connect()
@@ -73,10 +75,20 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                 .DisposeMany()
                 .Subscribe();
 
+            _clientOrdersSource
+                .Connect()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out _clientOrders)
+                .DisposeMany()
+                .Subscribe();
+
             this.WhenActivated(disposables =>
             {
-                Disposable.Create(() => _clientsSource.Clear())
-                    .DisposeWith(disposables);
+                Disposable.Create(() =>
+                {
+                    _clientsSource?.Clear();
+                    _clientOrdersSource?.Clear();
+                }).DisposeWith(disposables);
 
                 _clientsSource.PopulateFrom(loadClients.Execute());
 
