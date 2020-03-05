@@ -17,32 +17,39 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="auto" />
+      <RowDefinition Height="auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
+    <TextBlock Classes="h3">Данные заказа</TextBlock>
+
     <StackPanel
-        Grid.Row="0"
+        Grid.Row="1"
         Margin="10"
         Spacing="10">
+
       <StackPanel Orientation="Horizontal" Spacing="10">
         <StackPanel>
           <TextBlock>Номер заказа</TextBlock>
           <TextBox
               Width="150"
-              IsReadOnly="True"
+              Classes="readOnly"
               Text="{Binding OrderNumber, Mode=OneWay}" />
         </StackPanel>
 
         <StackPanel>
           <TextBlock>Дата заказа</TextBlock>
-          <DatePicker SelectedDate="{Binding CreateDate, Mode=OneWay}" />
+          <TextBox
+              Width="150"
+              Classes="readOnly"
+              Text="{Binding CreateDate, Mode=OneWay}" />
         </StackPanel>
 
         <StackPanel>
           <TextBlock>Cумма заказа</TextBlock>
           <TextBox
               Width="100"
-              IsReadOnly="True"
+              Classes="readOnly"
               Text="{Binding OrderSumm, Mode=OneWay}" />
         </StackPanel>
       </StackPanel>
@@ -84,27 +91,29 @@
           HorizontalAlignment="Left"
           Orientation="Horizontal"
           Spacing="10">
-        <Button Command="{Binding SaveOrder}">Сохранить</Button>
+        <Button Background="{StaticResource ThemeAccentBrush4}" Command="{Binding SaveOrder}">
+          Сохранить
+        </Button>
         <Button Command="{Binding Cancel}">Отмена</Button>
       </StackPanel>
     </StackPanel>
 
-    <Grid Grid.Row="1">
+    <Grid Grid.Row="2">
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
-      <TextBlock>Товары</TextBlock>
+      <TextBlock Classes="h3">Заказанные товары</TextBlock>
 
       <StackPanel
           Grid.Row="1"
           Margin="10"
           Orientation="Horizontal"
           Spacing="10">
-        <Button Command="{Binding SelectProductCommand}">Добавить</Button>
-        <Button>Убрать</Button>
+        <Button Command="{Binding SelectProductCommand}">Выбрать товар...</Button>
+        <Button>Убрать из списка</Button>
       </StackPanel>
 
       <DataGrid

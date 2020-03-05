@@ -62,7 +62,7 @@
       <WrapPanel>
         <StackPanel Margin="5">
           <TextBlock>Цена</TextBlock>
-          <NumericUpDown Width="100"  Value="{Binding ProductPrice}" />
+          <NumericUpDown Width="100" Value="{Binding ProductPrice}" />
         </StackPanel>
 
         <StackPanel Margin="5">
@@ -72,10 +72,11 @@
       </WrapPanel>
 
       <StackPanel
-          HorizontalAlignment="Right"
+          Margin="5,20"
+          HorizontalAlignment="Center"
           Orientation="Horizontal"
           Spacing="10">
-        <Button Command="{Binding SaveProduct}">Сохранить</Button>
+        <Button Background="{StaticResource ThemeAccentBrush4}" Command="{Binding SaveProduct}">Сохранить</Button>
         <Button Command="{Binding Cancel}">Отмена</Button>
       </StackPanel>
     </StackPanel>
