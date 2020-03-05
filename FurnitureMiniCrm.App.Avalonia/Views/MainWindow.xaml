@@ -23,26 +23,31 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <Border Background="LightBlue">
-
-      <StackPanel
-          Margin="10"
-          Orientation="Horizontal"
-          Spacing="15">
-        <Button Classes="Primary button" Command="{Binding CreateOrder}">Новый заказ</Button>
-        <Button Command="{Binding OpenOrders}">Заказы</Button>
-        <Button Command="{Binding OpenClients}">Клиенты</Button>
-        <Button Command="{Binding OpenProducts}">Товары</Button>
-      </StackPanel>
+    <Border BorderBrush="LightGray" BorderThickness="1">
+      <Menu Padding="5" FontSize="14">
+        <MenuItem
+            Margin="5,0"
+            Command="{Binding NewOrder}"
+            Header="Новый заказ" />
+        <MenuItem
+            Margin="5,0"
+            Command="{Binding OpenOrders}"
+            Header="Список заказов" />
+        <MenuItem Margin="5,0" Header="Клиенты">
+          <MenuItem Command="{Binding NewClient}" Header="Новый клиент" />
+          <MenuItem Command="{Binding OpenClients}" Header="Список клиентов" />
+        </MenuItem>
+        <MenuItem Margin="5,0" Header="Товары">
+          <MenuItem Command="{Binding NewProduct}" Header="Добавить товар" />
+          <MenuItem Command="{Binding OpenProducts}" Header="Список товаров" />
+        </MenuItem>
+        <MenuItem Header="Справочники" IsEnabled="False" />
+      </Menu>
     </Border>
 
     <reactiveUi:RoutedViewHost
         Grid.Row="1"
         Padding="10"
-        Router="{Binding Router}">
-      <reactiveUi:RoutedViewHost.DefaultContent>
-        <TextBlock Text="Default Content" />
-      </reactiveUi:RoutedViewHost.DefaultContent>
-    </reactiveUi:RoutedViewHost>
+        Router="{Binding Router}" />
   </Grid>
 </Window>

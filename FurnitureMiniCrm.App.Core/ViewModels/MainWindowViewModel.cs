@@ -1,7 +1,6 @@
-﻿using System;
-using System.Reactive;
-using System.Reactive.Disposables;
+﻿using System.Reactive;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace FurnitureMiniCrm.App.Core.ViewModels
 {
@@ -11,10 +10,24 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
         public ViewModelActivator Activator { get; }
 
+        [Reactive]
+        public bool CanCreateOrder { get; set; }
+
+        [Reactive]
+        public bool CanOpenOrdersList { get; set; }
+
+        [Reactive]
+        public bool CanOpenClientsList { get; set; }
+
+        [Reactive]
+        public bool CanOpenProductsList { get; set; }
+
         public ReactiveCommand<Unit, IRoutableViewModel> OpenClients { get; }
         public ReactiveCommand<Unit, IRoutableViewModel> OpenOrders { get; }
         public ReactiveCommand<Unit, IRoutableViewModel> OpenProducts { get; }
-        public ReactiveCommand<Unit, IRoutableViewModel> CreateOrder { get; }
+        public ReactiveCommand<Unit, IRoutableViewModel> NewOrder { get; }
+        public ReactiveCommand<Unit, IRoutableViewModel> NewProduct { get; }
+        public ReactiveCommand<Unit, IRoutableViewModel> NewClient { get; }
 
         public MainWindowViewModel()
         {
@@ -29,16 +42,18 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             OpenProducts = ReactiveCommand.CreateFromObservable(() =>
                 Router.Navigate.Execute(new ProductsMainViewModel(this)));
 
-            CreateOrder = ReactiveCommand.CreateFromObservable(() =>
+            NewOrder = ReactiveCommand.CreateFromObservable(() =>
                 Router.Navigate.Execute(new OrderFormViewModel(this)));
 
-            this.WhenActivated(disposables =>
-            {
-                OpenOrders
-                    .Execute()
-                    .Subscribe()
-                    .DisposeWith(disposables);
-            });
+            NewProduct = ReactiveCommand.CreateFromObservable(() =>
+                Router.Navigate.Execute(new ProductFormViewModel(this)));
+
+            NewClient = ReactiveCommand.CreateFromObservable(() =>
+                Router.Navigate.Execute(new ClientFormViewModel(this)));
+
+            //this.WhenActivated(disposables =>
+            //{
+            //});
         }
     }
 }

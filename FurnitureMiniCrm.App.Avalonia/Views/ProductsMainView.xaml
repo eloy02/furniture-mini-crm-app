@@ -27,7 +27,7 @@
         <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
-      <TextBlock FontSize="20" FontWeight="SemiBold">Товары</TextBlock>
+      <TextBlock Classes="h3">Товары</TextBlock>
 
       <DockPanel Grid.Row="1">
         <StackPanel
@@ -35,7 +35,7 @@
             DockPanel.Dock="Top"
             Orientation="Horizontal"
             Spacing="10">
-          <Button Command="{Binding CreateProduct}">Добавить</Button>
+          <Button Background="{StaticResource ThemeAccentBrush4}" Command="{Binding CreateProduct}">Добавить</Button>
 
           <Button Command="{Binding EditProduct}">Редактировать</Button>
         </StackPanel>
