@@ -9,7 +9,7 @@ namespace FurnitureMiniCrm.Services
     public class ServiceBase
     {
         private protected readonly string dbPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "furniturecrm",
             "database.db");
 
