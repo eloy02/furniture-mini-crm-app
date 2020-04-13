@@ -12,6 +12,12 @@ namespace FurnitureMiniCrm.Services
 
         Task<IEnumerable<OrderStatusModel>> GetOrderStatusesAsync();
 
+        Task AddOrderStatusAsync(OrderStatusModel orderStatus);
+
+        Task DeleteOrderStatusAsync(OrderStatusModel orderStatus);
+
+        Task DeleteOrderStatusAsync(int id);
+
         Task<OrderModel> GetOrderAsync(int id);
 
         Task<OrderModel> CreateNewOrder();

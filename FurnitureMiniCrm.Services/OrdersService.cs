@@ -1,9 +1,9 @@
-﻿using LiteDB;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using LiteDB;
 
 namespace FurnitureMiniCrm.Services
 {
@@ -14,6 +14,8 @@ namespace FurnitureMiniCrm.Services
         public Task<IEnumerable<OrderModel>> GetOrdersAsync() =>
             Task.FromResult(Get<OrderModel>()
                                 .Where(x => x.Status != null));
+
+        public IObservable<OrderModel> NewOrders => _newOrders;
 
         public Task<IEnumerable<OrderStatusModel>> GetOrderStatusesAsync()
         {
@@ -70,8 +72,6 @@ namespace FurnitureMiniCrm.Services
             return Task.CompletedTask;
         }
 
-        public IObservable<OrderModel> NewOrders => _newOrders;
-
         public Task<IEnumerable<OrderModel>> GetOrdersAsync(ClientModel client)
         {
             using var db = new LiteDatabase(dbPath);
@@ -108,6 +108,35 @@ namespace FurnitureMiniCrm.Services
             col.Insert(newOrder);
 
             return Task.FromResult(newOrder);
+        }
+
+        public Task AddOrderStatusAsync(OrderStatusModel orderStatus)
+        {
+            using var db = new LiteDatabase(dbPath);
+
+            var col = db.GetCollection<OrderStatusModel>();
+
+            col.EnsureIndex(x => x.Id, unique: true);
+
+            col.Insert(orderStatus);
+
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteOrderStatusAsync(OrderStatusModel orderStatus) =>
+            DeleteOrderStatusAsync(orderStatus.Id);
+
+        public Task DeleteOrderStatusAsync(int id)
+        {
+            using var db = new LiteDatabase(dbPath);
+
+            var col = db.GetCollection<OrderStatusModel>();
+
+            col.EnsureIndex(x => x.Id, unique: true);
+
+            col.Delete(id);
+
+            return Task.CompletedTask;
         }
     }
 }
