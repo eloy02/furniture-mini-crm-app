@@ -1,15 +1,17 @@
-﻿using LiteDB;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using LiteDB;
 
 namespace FurnitureMiniCrm.Services
 {
     public class ProductsService : ServiceBase, IProductsService
     {
         private readonly Subject<ProductModel> _newProducts = new Subject<ProductModel>();
+
+        public IObservable<ProductModel> NewProducts => _newProducts;
 
         public Task<IEnumerable<ProductModel>> GetProductsAsync()
         {
@@ -80,8 +82,6 @@ namespace FurnitureMiniCrm.Services
             return Task.FromResult(groups.AsEnumerable());
         }
 
-        public IObservable<ProductModel> NewProducts => _newProducts;
-
         public Task<IEnumerable<ProductStatusModel>> GetProductStatusesAsync()
         {
             var statuses = new List<ProductStatusModel>()
@@ -100,6 +100,33 @@ namespace FurnitureMiniCrm.Services
             };
 
             return Task.FromResult(statuses.AsEnumerable());
+        }
+
+        public Task AddProductGroupAsync(ProductGroupModel productGroup)
+        {
+            using var db = new LiteDatabase(dbPath);
+            var col = db.GetCollection<ProductGroupModel>();
+
+            col.Insert(productGroup);
+
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteProductGroupAsync(ProductGroupModel productGroup) =>
+            DeleteProductGroupAsync(productGroup.Id);
+
+        public Task DeleteProductGroupAsync(int productGroupId)
+        {
+            using var db = new LiteDatabase(dbPath);
+
+            var col = db.GetCollection<ProductGroupModel>();
+
+            if (!col.Exists(x => x.Id == productGroupId))
+                throw new Exception("Item not found");
+
+            col.Delete(productGroupId);
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -14,6 +14,12 @@ namespace FurnitureMiniCrm.Services
 
         Task<IEnumerable<ProductGroupModel>> GetProductGroupsAsync();
 
+        Task AddProductGroupAsync(ProductGroupModel productGroup);
+
+        Task DeleteProductGroupAsync(ProductGroupModel productGroup);
+
+        Task DeleteProductGroupAsync(int productGroupId);
+
         Task<IEnumerable<ProductStatusModel>> GetProductStatusesAsync();
 
         IObservable<ProductModel> NewProducts { get; }
