@@ -20,14 +20,17 @@
         public string BuildingNumber { get; set; }
         public string FlatNumber { get; set; }
 
-        public override string ToString()
+        public string FullAddress
         {
-            var str = $"г.{City}, ул. {Street} {BuildingNumber}";
+            get
+            {
+                var str = $"г.{City}, ул. {Street} {BuildingNumber}";
 
-            if (!string.IsNullOrWhiteSpace(FlatNumber))
-                str = $"{str}, кв. {FlatNumber}";
+                if (!string.IsNullOrWhiteSpace(FlatNumber))
+                    str = $"{str}, кв. {FlatNumber}";
 
-            return str;
+                return str;
+            }
         }
     }
 }

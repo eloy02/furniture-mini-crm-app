@@ -45,33 +45,34 @@
 
         <DataGrid
             AutoGenerateColumns="False"
+            CanUserResizeColumns="True"
             GridLinesVisibility="All"
             HeadersVisibility="All"
-            Items="{Binding Clients}"
+            Items="{Binding Clients, Mode=OneWay}"
             SelectedItem="{Binding SelectedClient, Mode=TwoWay}"
             SelectionMode="Single">
           <DataGrid.Columns>
             <DataGridTextColumn
-                Binding="{Binding Fio}"
+                Binding="{Binding Fio, Mode=OneWay}"
                 Header="ФИО"
                 IsReadOnly="True" />
             <DataGridTextColumn
-                Binding="{Binding Address}"
+                Binding="{Binding Address.FullAddress, Mode=OneWay}"
                 Header="Адрес"
                 IsReadOnly="True" />
             <DataGridTextColumn
-                Binding="{Binding PhoneNumber}"
+                Binding="{Binding PhoneNumber, Mode=OneWay}"
                 Header="Телефон"
                 IsReadOnly="True" />
             <DataGridTextColumn
-                Binding="{Binding EmailAddress}"
+                Binding="{Binding EmailAddress, Mode=OneWay}"
                 Header="Email"
                 IsReadOnly="True" />
             <DataGridTemplateColumn Width="150" Header="Комментарии">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
                   <TextBlock
-                      Text="{Binding Comments}"
+                      Text="{Binding Comments, Mode=OneWay}"
                       TextAlignment="Left"
                       TextWrapping="Wrap" />
                 </DataTemplate>
@@ -117,19 +118,19 @@
             SelectionMode="Single">
           <DataGrid.Columns>
             <DataGridTextColumn
-                Binding="{Binding Id}"
+                Binding="{Binding Id, Mode=OneWay}"
                 Header="№ Заказа"
                 IsReadOnly="True" />
             <DataGridTextColumn
-                Binding="{Binding CreateDate}"
+                Binding="{Binding CreateDate, Mode=OneWay}"
                 Header="Дата заказа"
                 IsReadOnly="True" />
             <DataGridTextColumn
-                Binding="{Binding Sum}"
+                Binding="{Binding Sum, Mode=OneWay}"
                 Header="Сумма заказа"
                 IsReadOnly="True" />
             <DataGridTextColumn
-                Binding="{Binding Status.Name}"
+                Binding="{Binding Status.Name, Mode=OneWay}"
                 Header="Статус заказа"
                 IsReadOnly="True" />
           </DataGrid.Columns>
