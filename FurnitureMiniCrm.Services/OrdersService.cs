@@ -19,26 +19,11 @@ namespace FurnitureMiniCrm.Services
 
         public Task<IEnumerable<OrderStatusModel>> GetOrderStatusesAsync()
         {
-            var statuses = new List<OrderStatusModel>()
-            {
-                new OrderStatusModel()
-                {
-                    Id = 1,
-                    Name = "Предварительный заказ"
-                },
+            using var db = new LiteDatabase(dbPath);
 
-                new OrderStatusModel()
-                {
-                    Id = 2,
-                    Name = "В работе"
-                },
+            var col = db.GetCollection<OrderStatusModel>();
 
-                new OrderStatusModel()
-                {
-                    Id = 3,
-                    Name = "Завершен"
-                },
-            };
+            var statuses = col.FindAll().ToList();
 
             return Task.FromResult(statuses.AsEnumerable());
         }
@@ -80,6 +65,8 @@ namespace FurnitureMiniCrm.Services
 
             col.EnsureIndex(x => x.Client.Id);
 
+            col.DeleteMany(x => x.Status == null || x.Status.Id == default);
+
             var orders = col
                 .Query()
                 .Where(x => x.Client != null)
@@ -95,14 +82,17 @@ namespace FurnitureMiniCrm.Services
 
             var col = db.GetCollection<OrderModel>();
 
-            col.DeleteMany(x => x.Status == null);
+            col.DeleteMany(x => x.Status == null || x.Status.Id == default);
 
             var count = col.Count();
 
             var newOrder = new OrderModel()
             {
                 Id = count + 1,
-                CreateDate = DateTime.Now
+                CreateDate = DateTime.Now,
+                Client = new ClientModel(),
+                Products = new List<OrderProductModel>(),
+                Status = new OrderStatusModel()
             };
 
             col.Insert(newOrder);

@@ -29,6 +29,8 @@ namespace FurnitureMiniCrm.Services
 
             var col = db.GetCollection<T>();
 
+            col.DeleteMany(x => x.Status == null || x.Status.Id == default);
+
             var res = col.FindAll();
 
             return res.ToList();

@@ -58,46 +58,22 @@ namespace FurnitureMiniCrm.Services
 
         public Task<IEnumerable<ProductGroupModel>> GetProductGroupsAsync()
         {
-            var groups = new List<ProductGroupModel>()
-            {
-                new ProductGroupModel()
-                {
-                    Id = 1,
-                    Name = "Спальня"
-                },
+            using var db = new LiteDatabase(dbPath);
 
-                new ProductGroupModel()
-                {
-                    Id = 2,
-                    Name = "Кухня"
-                },
+            var col = db.GetCollection<ProductGroupModel>();
 
-                new ProductGroupModel()
-                {
-                    Id = 3,
-                    Name = "Гостинная"
-                },
-            };
+            var groups = col.FindAll().ToList();
 
             return Task.FromResult(groups.AsEnumerable());
         }
 
         public Task<IEnumerable<ProductStatusModel>> GetProductStatusesAsync()
         {
-            var statuses = new List<ProductStatusModel>()
-            {
-                new ProductStatusModel()
-                {
-                    Id = 1,
-                    Name = "В продаже"
-                },
+            using var db = new LiteDatabase(dbPath);
 
-                new ProductStatusModel()
-                {
-                    Id = 2,
-                    Name = "Снят с продажи"
-                }
-            };
+            var col = db.GetCollection<ProductStatusModel>();
+
+            var statuses = col.FindAll().ToList();
 
             return Task.FromResult(statuses.AsEnumerable());
         }
@@ -125,6 +101,33 @@ namespace FurnitureMiniCrm.Services
                 throw new Exception("Item not found");
 
             col.Delete(productGroupId);
+
+            return Task.CompletedTask;
+        }
+
+        public Task AddProductStatusAsync(ProductStatusModel productStatus)
+        {
+            using var db = new LiteDatabase(dbPath);
+            var col = db.GetCollection<ProductStatusModel>();
+
+            col.Insert(productStatus);
+
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteProductStatusAsync(ProductStatusModel productStatus) =>
+            DeleteProductStatusAsync(productStatus.Id);
+
+        public Task DeleteProductStatusAsync(int productStatusId)
+        {
+            using var db = new LiteDatabase(dbPath);
+
+            var col = db.GetCollection<ProductStatusModel>();
+
+            if (!col.Exists(x => x.Id == productStatusId))
+                throw new Exception("Item not found");
+
+            col.Delete(productStatusId);
 
             return Task.CompletedTask;
         }

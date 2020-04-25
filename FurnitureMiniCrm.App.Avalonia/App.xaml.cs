@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using AvaloniaAppTemplate.Namespace;
 using FurnitureMiniCrm.App.Avalonia.Views;
 using FurnitureMiniCrm.App.Core.ViewModels;
 using FurnitureMiniCrm.Services;
@@ -37,6 +38,7 @@ namespace FurnitureMiniCrm.App.Avalonia
             Locator.CurrentMutable.Register<IViewFor<OrderFormViewModel>>(() => new OrderFormView());
             Locator.CurrentMutable.Register<IViewFor<ProductFormViewModel>>(() => new ProductFormView());
             Locator.CurrentMutable.Register<IViewFor<ClientFormViewModel>>(() => new ClientFormView());
+            Locator.CurrentMutable.Register<IViewFor<CommonCataloguesViewModel>>(() => new CommonCataloguesView());
 
             base.OnFrameworkInitializationCompleted();
         }

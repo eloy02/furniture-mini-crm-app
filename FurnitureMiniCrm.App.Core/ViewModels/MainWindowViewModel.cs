@@ -28,6 +28,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
         public ReactiveCommand<Unit, IRoutableViewModel> NewOrder { get; }
         public ReactiveCommand<Unit, IRoutableViewModel> NewProduct { get; }
         public ReactiveCommand<Unit, IRoutableViewModel> NewClient { get; }
+        public ReactiveCommand<Unit, IRoutableViewModel> OpenCataloguesForm { get; }
 
         public MainWindowViewModel()
         {
@@ -50,6 +51,9 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
             NewClient = ReactiveCommand.CreateFromObservable(() =>
                 Router.Navigate.Execute(new ClientFormViewModel(this)));
+
+            OpenCataloguesForm = ReactiveCommand.CreateFromObservable(() =>
+                Router.Navigate.Execute(new CommonCataloguesViewModel(this)));
 
             //this.WhenActivated(disposables =>
             //{

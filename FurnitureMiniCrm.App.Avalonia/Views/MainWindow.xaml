@@ -41,7 +41,7 @@
           <MenuItem Command="{Binding NewProduct}" Header="Добавить товар" />
           <MenuItem Command="{Binding OpenProducts}" Header="Список товаров" />
         </MenuItem>
-        <MenuItem Header="Справочники" IsEnabled="False" />
+        <MenuItem Command="{Binding OpenCataloguesForm}" Header="Справочники" />
       </Menu>
     </Border>
 
