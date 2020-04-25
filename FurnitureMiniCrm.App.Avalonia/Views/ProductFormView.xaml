@@ -20,7 +20,9 @@
           <TextBlock>Наименование</TextBlock>
           <TextBox Width="200" Text="{Binding ProductName}" />
         </StackPanel>
+      </WrapPanel>
 
+      <WrapPanel>
         <StackPanel Margin="5">
           <TextBlock>Группа</TextBlock>
           <ComboBox
@@ -54,6 +56,18 @@
 
       <WrapPanel>
         <StackPanel Margin="5">
+          <TextBlock>
+            Размеры (длина Х ширина Х высота/глубина)
+          </TextBlock>
+          <TextBox
+              Width="150"
+              HorizontalAlignment="Left"
+              Text="{Binding Size, Mode=TwoWay}" />
+        </StackPanel>
+      </WrapPanel>
+
+      <WrapPanel>
+        <StackPanel Margin="5">
           <TextBlock>Ед. измерения</TextBlock>
           <TextBox Width="100" Text="{Binding ProductUnit}" />
         </StackPanel>
@@ -73,7 +87,7 @@
 
       <StackPanel
           Margin="5,20"
-          HorizontalAlignment="Center"
+          HorizontalAlignment="Left"
           Orientation="Horizontal"
           Spacing="10">
         <Button Background="{StaticResource ThemeAccentBrush4}" Command="{Binding SaveProduct}">Сохранить</Button>

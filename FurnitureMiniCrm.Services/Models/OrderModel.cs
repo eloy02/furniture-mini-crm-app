@@ -15,6 +15,7 @@ namespace FurnitureMiniCrm.Services
         public ProductModel Product { get; set; }
         public int Count { get; set; }
         public double TotalPrice { get; set; }
+        public string Size { get; set; }
     }
 
     public class OrderModel

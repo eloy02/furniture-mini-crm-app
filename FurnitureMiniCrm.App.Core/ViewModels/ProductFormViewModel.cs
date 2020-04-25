@@ -1,13 +1,13 @@
-﻿using FurnitureMiniCrm.Services;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Splat;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using FurnitureMiniCrm.Services;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace FurnitureMiniCrm.App.Core.ViewModels
 {
@@ -44,6 +44,9 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
         [Reactive]
         public string ProductUnit { get; set; }
+
+        [Reactive]
+        public string Size { get; set; }
 
         [Reactive]
         public double? ProductPrice { get; set; }
@@ -103,6 +106,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                         SellPrice = ProductSellPrice.Value,
                         Status = SelectedProductStatus,
                         Unit = ProductUnit,
+                        Size = Size
                     });
                 }
                 else
@@ -117,6 +121,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                         SellPrice = ProductSellPrice.Value,
                         Status = SelectedProductStatus,
                         Unit = ProductUnit,
+                        Size = Size
                     });
                 }
 

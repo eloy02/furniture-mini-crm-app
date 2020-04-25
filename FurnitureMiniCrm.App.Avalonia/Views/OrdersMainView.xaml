@@ -119,6 +119,10 @@
               Binding="{Binding TotalPrice}"
               Header="Сумма"
               IsReadOnly="True" />
+          <DataGridTextColumn
+              Binding="{Binding Size}"
+              Header="Размеры"
+              IsReadOnly="True" />
         </DataGrid.Columns>
       </DataGrid>
     </Grid>

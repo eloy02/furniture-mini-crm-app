@@ -77,7 +77,10 @@
                 Binding="{Binding Unit}"
                 Header="Ед. изм"
                 IsReadOnly="True" />
-            <!--<DataGridTextColumn Header="Размер" IsReadOnly="True" />-->
+            <DataGridTextColumn
+                Binding="{Binding Size}"
+                Header="Размер"
+                IsReadOnly="True" />
             <!--<DataGridTextColumn Header="Цвет" IsReadOnly="True" />-->
           </DataGrid.Columns>
         </DataGrid>

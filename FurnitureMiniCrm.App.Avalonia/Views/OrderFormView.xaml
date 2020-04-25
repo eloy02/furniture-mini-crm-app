@@ -149,7 +149,11 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-          <DataGridTextColumn Binding="{Binding TotalPrice}" Header="Сумма" />
+          <DataGridTextColumn
+              Binding="{Binding TotalPrice}"
+              Header="Сумма"
+              IsReadOnly="True" />
+          <DataGridTextColumn Binding="{Binding Size, Mode=TwoWay}" Header="Размеры" />
         </DataGrid.Columns>
       </DataGrid>
     </Grid>

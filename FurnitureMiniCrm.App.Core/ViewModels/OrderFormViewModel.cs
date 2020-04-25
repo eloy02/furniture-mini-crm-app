@@ -1,15 +1,15 @@
-﻿using DynamicData;
-using FurnitureMiniCrm.Services;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Splat;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using DynamicData;
+using FurnitureMiniCrm.Services;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace FurnitureMiniCrm.App.Core.ViewModels
 {
@@ -19,6 +19,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
         {
             Id = id;
             Product = product;
+            Size = product.Size;
 
             this.WhenAnyValue(x => x.Count)
                 .Select(count => count * Product.SellPrice)
@@ -30,6 +31,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             Id = orderProduct.Id;
             Product = orderProduct.Product;
             Count = orderProduct.Count;
+            Size = orderProduct.Size;
 
             this.WhenAnyValue(x => x.Count)
                 .Select(count => count * Product.SellPrice)
@@ -45,6 +47,9 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
         [Reactive]
         public double TotalPrice { get; set; }
+
+        [Reactive]
+        public string Size { get; set; }
     }
 
     public class OrderFormViewModel : ReactiveObject, IActivatableViewModel, IRoutableViewModel
@@ -130,7 +135,8 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                         Id = _orderItemsSource.Items.IndexOf(o),
                         Count = o.Count,
                         Product = o.Product,
-                        TotalPrice = o.TotalPrice
+                        TotalPrice = o.TotalPrice,
+                        Size = o.Size
                     })
                     .ToList();
 
