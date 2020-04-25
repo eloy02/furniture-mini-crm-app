@@ -13,7 +13,7 @@ namespace FurnitureMiniCrm.Services
 
         public Task<IEnumerable<OrderModel>> GetOrdersAsync() =>
             Task.FromResult(Get<OrderModel>()
-                                .Where(x => x.Status != null));
+                                .Where(x => x.Status != null && x.Status.Id != default));
 
         public IObservable<OrderModel> NewOrders => _newOrders;
 
@@ -65,10 +65,9 @@ namespace FurnitureMiniCrm.Services
 
             col.EnsureIndex(x => x.Client.Id);
 
-            col.DeleteMany(x => x.Status == null || x.Status.Id == default);
-
             var orders = col
                 .Query()
+                .Where(x => x.Status != null && x.Status.Id != default)
                 .Where(x => x.Client != null)
                 .Where(x => x.Client.Id == client.Id)
                 .ToList();
