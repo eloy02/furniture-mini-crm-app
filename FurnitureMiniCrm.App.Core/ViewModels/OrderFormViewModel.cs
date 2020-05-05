@@ -52,11 +52,40 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
         public string Size { get; set; }
     }
 
+    public class CustomOrderItemViewModel : ReactiveObject
+    {
+        public CustomOrderItemViewModel(CustomOrderProductModel customProduct)
+        {
+            Id = customProduct.Id;
+            Product = customProduct;
+            Count = customProduct.Count;
+            Size = customProduct.Size;
+
+            this.WhenAnyValue(x => x.Count)
+                .Select(c => c * Product.SellPrice)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(total => TotalPrice = total);
+        }
+
+        public int Id { get; set; }
+        public CustomOrderProductModel Product { get; set; }
+
+        [Reactive]
+        public int Count { get; set; }
+
+        [Reactive]
+        public double TotalPrice { get; private set; }
+
+        [Reactive]
+        public string Size { get; set; }
+    }
+
     public class OrderFormViewModel : ReactiveObject, IActivatableViewModel, IRoutableViewModel
     {
         private readonly IOrdersService _ordersService;
 
         private readonly SourceCache<OrderItemViewModel, int> _orderItemsSource;
+        private readonly SourceCache<CustomOrderItemViewModel, int> _customOrderItemsSource;
 
         [Reactive]
         private OrderModel Order { get; set; }
@@ -70,8 +99,12 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
         public ReactiveCommand<Unit, Unit> SaveOrder { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
 
+        public ReactiveCommand<Unit, Unit> AddCustomProductCommand { get; }
+        public ReactiveCommand<Unit, Unit> RemoveCustomProductCommand { get; }
+
         public Interaction<SelectClientViewModel, Unit> SelectClient { get; }
         public Interaction<SelectProductViewModel, Unit> SelectProduct { get; }
+        public Interaction<CustomOrderProductViewModel, Unit> AddCustomProduct { get; }
 
         [Reactive]
         public string OrderNumber { get; set; }
@@ -94,8 +127,14 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
         private readonly ReadOnlyObservableCollection<OrderItemViewModel> _orderItems;
         public ReadOnlyObservableCollection<OrderItemViewModel> OrderItems => _orderItems;
 
+        private readonly ReadOnlyObservableCollection<CustomOrderItemViewModel> _customOrderItems;
+        public ReadOnlyObservableCollection<CustomOrderItemViewModel> CustomOrderItems => _customOrderItems;
+
         [Reactive]
         public OrderItemViewModel SelectedProduct { get; set; }
+
+        [Reactive]
+        public CustomOrderItemViewModel SelectedCustomProduct { get; set; }
 
         public OrderFormViewModel(IScreen hostScreen = null, ClientModel clientForOrder = null, OrderModel orderForEdit = null)
         {
@@ -112,10 +151,29 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
             SelectClient = new Interaction<SelectClientViewModel, Unit>();
             SelectProduct = new Interaction<SelectProductViewModel, Unit>();
+            AddCustomProduct = new Interaction<CustomOrderProductViewModel, Unit>();
 
             Cancel = ReactiveCommand.CreateFromObservable(() => HostScreen.Router.NavigateBack.Execute());
             SelectClientCommand = ReactiveCommand.CreateFromTask(() => SelectClientAsync());
             SelectProductCommand = ReactiveCommand.CreateFromTask(() => SelectProductAsync());
+
+            AddCustomProductCommand = ReactiveCommand.CreateFromObservable(() =>
+            {
+                var vm = Locator.Current.GetService<CustomOrderProductViewModel>();
+
+                vm.OnOrderProductCreated = item =>
+                {
+                    item.Id = _customOrderItemsSource.Count;
+                    _customOrderItemsSource.AddOrUpdate(new CustomOrderItemViewModel(item));
+                };
+
+                return AddCustomProduct.Handle(vm);
+            });
+
+            var canRemoveCustomProduct = this.WhenAnyValue(x => x.SelectedCustomProduct)
+                    .Select(x => x != null);
+            RemoveCustomProductCommand = ReactiveCommand.Create(() =>
+                _customOrderItemsSource.Remove(SelectedCustomProduct), canExecute: canRemoveCustomProduct);
 
             var canSaveOrder = this.WhenAnyValue(
                 x => x.SelectedOrderStatus,
@@ -139,6 +197,18 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                         Size = o.Size
                     })
                     .ToList();
+                Order.CustomProducts = _customOrderItemsSource.Items
+                    .Select(o => new CustomOrderProductModel()
+                    {
+                        Id = o.Id,
+                        Count = o.Count,
+                        Name = o.Product.Name,
+                        Price = o.Product.Price,
+                        SellPrice = o.Product.SellPrice,
+                        Size = o.Size,
+                        TotalPrice = o.TotalPrice,
+                        Unit = o.Product.Unit
+                    }).ToList();
 
                 await _ordersService.SetOrderAsync(Order);
 
@@ -151,6 +221,15 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                 .Connect()
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out _orderItems)
+                .DisposeMany()
+                .Subscribe();
+
+            _customOrderItemsSource = new SourceCache<CustomOrderItemViewModel, int>(x => x.Id);
+
+            _customOrderItemsSource
+                .Connect()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out _customOrderItems)
                 .DisposeMany()
                 .Subscribe();
 
@@ -171,7 +250,15 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                         SelectedClient = order.Client;
 
                         if (order.Products != null)
+                        {
                             _orderItemsSource.AddOrUpdate(order.Products.Select(p => new OrderItemViewModel(p)));
+                        }
+
+                        if (order.CustomProducts != null)
+                        {
+                            _customOrderItemsSource.AddOrUpdate(
+                                order.CustomProducts.Select(p => new CustomOrderItemViewModel(p)));
+                        }
                     })
                     .DisposeWith(disposables);
 
@@ -192,7 +279,9 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                     .DisposeWith(disposables);
 
                 if (orderForEdit != null)
+                {
                     Order = orderForEdit;
+                }
 
                 if (orderForEdit is null)
                 {
@@ -215,7 +304,8 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                 }
 
                 Observable.Timer(TimeSpan.FromSeconds(0.5), TimeSpan.FromSeconds(0.3))
-                    .Select(_ => _orderItemsSource.Items.Sum(x => x.TotalPrice))
+                    .SelectMany(_ => CalculateTotalSummAsync())
+                    .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(totalSum => OrderSumm = totalSum)
                     .DisposeWith(disposables);
 
@@ -233,7 +323,9 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             await SelectProduct.Handle(selectProductVm);
 
             if (selectProductVm.SelectedProduct != null)
+            {
                 _orderItemsSource.AddOrUpdate(new OrderItemViewModel(_orderItemsSource.Count, selectProductVm.SelectedProduct));
+            }
         }
 
         private async Task SelectClientAsync()
@@ -243,7 +335,24 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             await SelectClient.Handle(selectClientVm);
 
             if (selectClientVm.SelectedClient != null)
+            {
                 SelectedClient = selectClientVm.SelectedClient;
+            }
+        }
+
+        private async Task<double> CalculateTotalSummAsync()
+        {
+            var productsSumm = Task.Run(() =>
+                _orderItemsSource.Items
+                    .Sum(x => x.TotalPrice));
+
+            var customProductsSum = Task.Run(() =>
+                _customOrderItemsSource.Items
+                    .Sum(x => x.TotalPrice));
+
+            await Task.WhenAll(productsSumm, customProductsSum);
+
+            return productsSumm.Result + customProductsSum.Result;
         }
     }
 }

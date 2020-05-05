@@ -17,8 +17,10 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
         private readonly SourceCache<OrderModel, int> _ordersSource;
         private readonly SourceCache<OrderProductModel, int> _orderItemsSource;
+        private readonly SourceCache<CustomOrderProductModel, int> _customOrderItemsSource;
         private readonly ReadOnlyObservableCollection<OrderModel> _orders;
         private readonly ReadOnlyObservableCollection<OrderProductModel> _orderItems;
+        private readonly ReadOnlyObservableCollection<CustomOrderProductModel> _customOrderItems;
 
         public string UrlPathSegment { get; } = "/orders";
         public IScreen HostScreen { get; }
@@ -29,6 +31,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
         public ReadOnlyObservableCollection<OrderModel> Orders => _orders;
         public ReadOnlyObservableCollection<OrderProductModel> OrderItems => _orderItems;
+        public ReadOnlyObservableCollection<CustomOrderProductModel> CustomOrderItems => _customOrderItems;
 
         [Reactive]
         public OrderModel SelectedOrder { get; set; }
@@ -48,6 +51,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
             _ordersSource = new SourceCache<OrderModel, int>(x => x.Id);
             _orderItemsSource = new SourceCache<OrderProductModel, int>(x => x.Id);
+            _customOrderItemsSource = new SourceCache<CustomOrderProductModel, int>(x => x.Id);
 
             _ordersSource
                 .Connect()
@@ -60,6 +64,13 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                 .Connect()
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out _orderItems)
+                .DisposeMany()
+                .Subscribe();
+
+            _customOrderItemsSource
+                .Connect()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Bind(out _customOrderItems)
                 .DisposeMany()
                 .Subscribe();
 
@@ -86,10 +97,23 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                     .Subscribe(orderItems => _orderItemsSource.AddOrUpdate(orderItems))
                     .DisposeWith(disposables);
 
+                this.WhenAnyValue(x => x.SelectedOrder)
+                    .Do(_ => _customOrderItemsSource.Clear())
+                    .Where(order => order != null)
+                    .Select(order => order.CustomProducts)
+                    .Subscribe(items => _customOrderItemsSource.AddOrUpdate(items))
+                    .DisposeWith(disposables);
+
                 Disposable.Create(() =>
                 {
                     _ordersSource?.Clear();
+                    //_ordersSource?.Dispose();
+
                     _orderItemsSource?.Clear();
+                    //_orderItemsSource?.Dispose();
+
+                    _customOrderItemsSource?.Clear();
+                    //_customOrderItemsSource?.Dispose();
 
                     SelectedOrder = null;
                 }).DisposeWith(disposables);

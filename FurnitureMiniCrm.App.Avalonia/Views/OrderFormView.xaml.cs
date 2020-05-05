@@ -1,10 +1,12 @@
-﻿using Avalonia;
+﻿using System.Reactive;
+using System.Reactive.Disposables;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
+using AvaloniaAppTemplate.Namespace;
 using FurnitureMiniCrm.App.Core.ViewModels;
 using ReactiveUI;
-using System.Reactive;
 
 namespace FurnitureMiniCrm.App.Avalonia.Views
 {
@@ -12,11 +14,11 @@ namespace FurnitureMiniCrm.App.Avalonia.Views
     {
         public OrderFormView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             this.WhenActivated(disposables =>
             {
-                this.ViewModel
+                ViewModel
                     .SelectClient
                     .RegisterHandler(async interaction =>
                     {
@@ -34,7 +36,7 @@ namespace FurnitureMiniCrm.App.Avalonia.Views
                         interaction.SetOutput(new Unit());
                     });
 
-                this.ViewModel
+                ViewModel
                     .SelectProduct
                     .RegisterHandler(async interaction =>
                     {
@@ -51,6 +53,24 @@ namespace FurnitureMiniCrm.App.Avalonia.Views
 
                         interaction.SetOutput(new Unit());
                     });
+
+                ViewModel
+                    .AddCustomProduct
+                    .RegisterHandler(async interaction =>
+                    {
+                        var view = new CustomOrderProductView()
+                        {
+                            DataContext = interaction.Input,
+                            ViewModel = interaction.Input
+                        };
+
+                        if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                        {
+                            await view.ShowDialog(desktop.MainWindow);
+                        }
+
+                        interaction.SetOutput(new Unit());
+                    }).DisposeWith(disposables);
             });
         }
 

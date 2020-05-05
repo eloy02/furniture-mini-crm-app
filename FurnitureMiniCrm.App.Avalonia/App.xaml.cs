@@ -32,6 +32,8 @@ namespace FurnitureMiniCrm.App.Avalonia
             Locator.CurrentMutable.RegisterLazySingleton<IProductsService>(() => new ProductsService());
             Locator.CurrentMutable.RegisterLazySingleton<IOrdersService>(() => new OrdersService());
 
+            Locator.CurrentMutable.Register(() => new CustomOrderProductViewModel());
+
             Locator.CurrentMutable.Register<IViewFor<ClientsMainViewModel>>(() => new ClientsMainView());
             Locator.CurrentMutable.Register<IViewFor<OrdersMainViewModel>>(() => new OrdersMainView());
             Locator.CurrentMutable.Register<IViewFor<ProductsMainViewModel>>(() => new ProductsMainView());
@@ -39,6 +41,7 @@ namespace FurnitureMiniCrm.App.Avalonia
             Locator.CurrentMutable.Register<IViewFor<ProductFormViewModel>>(() => new ProductFormView());
             Locator.CurrentMutable.Register<IViewFor<ClientFormViewModel>>(() => new ClientFormView());
             Locator.CurrentMutable.Register<IViewFor<CommonCataloguesViewModel>>(() => new CommonCataloguesView());
+            Locator.CurrentMutable.Register<IViewFor<CustomOrderProductViewModel>>(() => new CustomOrderProductView());
 
             base.OnFrameworkInitializationCompleted();
         }

@@ -103,6 +103,9 @@
         <RowDefinition Height="auto" />
         <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
       <TextBlock Classes="h3">Заказанные товары</TextBlock>
@@ -112,7 +115,7 @@
           Margin="10"
           Orientation="Horizontal"
           Spacing="10">
-        <Button Command="{Binding SelectProductCommand}">Выбрать товар...</Button>
+        <Button Command="{Binding SelectProductCommand}">Выбрать товар из справочника</Button>
         <Button>Убрать из списка</Button>
       </StackPanel>
 
@@ -149,6 +152,54 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
+          <DataGridTextColumn
+              Binding="{Binding TotalPrice}"
+              Header="Сумма"
+              IsReadOnly="True" />
+          <DataGridTextColumn Binding="{Binding Size, Mode=TwoWay}" Header="Размеры" />
+        </DataGrid.Columns>
+      </DataGrid>
+
+      <TextBlock Grid.Row="3" Classes="h3">Индивидуальные товары</TextBlock>
+
+      <StackPanel
+          Grid.Row="4"
+          Margin="10"
+          Orientation="Horizontal"
+          Spacing="10">
+        <Button Command="{Binding AddCustomProductCommand}">Добавить</Button>
+        <Button Command="{Binding RemoveCustomProductCommand}">Убрать из списка</Button>
+      </StackPanel>
+
+      <DataGrid
+          Grid.Row="5"
+          AutoGenerateColumns="False"
+          Items="{Binding CustomOrderItems}"
+          SelectedItem="{Binding SelectedCustomProduct, Mode=TwoWay}">
+        <DataGrid.Columns>
+          <DataGridTextColumn
+              Binding="{Binding Product.Name}"
+              Header="Наименование"
+              IsReadOnly="True" />
+
+          <DataGridTextColumn
+              Binding="{Binding Product.SellPrice}"
+              Header="Цена продажи"
+              IsReadOnly="True" />
+
+          <DataGridTextColumn
+              Binding="{Binding Product.Unit}"
+              Header="Ед. изм"
+              IsReadOnly="True" />
+
+          <DataGridTemplateColumn Header="Количество">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <NumericUpDown Value="{Binding Count, Mode=TwoWay}" />
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+
           <DataGridTextColumn
               Binding="{Binding TotalPrice}"
               Header="Сумма"

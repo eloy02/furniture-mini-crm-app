@@ -83,6 +83,8 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="auto" />
         <RowDefinition Height="*" />
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
       </Grid.RowDefinitions>
 
       <TextBlock Grid.Row="0" Classes="h3">Заказанные товары</TextBlock>
@@ -116,6 +118,43 @@
               Binding="{Binding Count}"
               Header="Кол-во"
               IsReadOnly="True" />
+          <DataGridTextColumn
+              Binding="{Binding TotalPrice}"
+              Header="Сумма"
+              IsReadOnly="True" />
+          <DataGridTextColumn
+              Binding="{Binding Size}"
+              Header="Размеры"
+              IsReadOnly="True" />
+        </DataGrid.Columns>
+      </DataGrid>
+
+      <TextBlock Grid.Row="2" Classes="h3">Индивидуальные товары</TextBlock>
+      <DataGrid
+          Grid.Row="5"
+          AutoGenerateColumns="False"
+          Items="{Binding CustomOrderItems}">
+        <DataGrid.Columns>
+          <DataGridTextColumn
+              Binding="{Binding Name}"
+              Header="Наименование"
+              IsReadOnly="True" />
+
+          <DataGridTextColumn
+              Binding="{Binding SellPrice}"
+              Header="Цена продажи"
+              IsReadOnly="True" />
+
+          <DataGridTextColumn
+              Binding="{Binding Unit}"
+              Header="Ед. изм"
+              IsReadOnly="True" />
+
+          <DataGridTextColumn
+              Binding="{Binding Count}"
+              Header="Количество"
+              IsReadOnly="True" />
+
           <DataGridTextColumn
               Binding="{Binding TotalPrice}"
               Header="Сумма"
