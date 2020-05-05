@@ -33,6 +33,7 @@ namespace FurnitureMiniCrm.App.Avalonia
             Locator.CurrentMutable.RegisterLazySingleton<IOrdersService>(() => new OrdersService());
 
             Locator.CurrentMutable.Register(() => new CustomOrderProductViewModel());
+            Locator.CurrentMutable.Register(() => new OrderFormViewModel());
 
             Locator.CurrentMutable.Register<IViewFor<ClientsMainViewModel>>(() => new ClientsMainView());
             Locator.CurrentMutable.Register<IViewFor<OrdersMainViewModel>>(() => new OrdersMainView());

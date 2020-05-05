@@ -116,7 +116,7 @@
           Orientation="Horizontal"
           Spacing="10">
         <Button Command="{Binding SelectProductCommand}">Выбрать товар из справочника</Button>
-        <Button>Убрать из списка</Button>
+        <Button Command="{Binding RemoveProductCommand}">Убрать из списка</Button>
       </StackPanel>
 
       <DataGrid

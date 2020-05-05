@@ -95,6 +95,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
         public ViewModelActivator Activator { get; }
 
         public ReactiveCommand<Unit, Unit> SelectClientCommand { get; }
+        public ReactiveCommand<Unit, Unit> RemoveProductCommand { get; }
         public ReactiveCommand<Unit, Unit> SelectProductCommand { get; }
         public ReactiveCommand<Unit, Unit> SaveOrder { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
@@ -156,6 +157,12 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
             Cancel = ReactiveCommand.CreateFromObservable(() => HostScreen.Router.NavigateBack.Execute());
             SelectClientCommand = ReactiveCommand.CreateFromTask(() => SelectClientAsync());
             SelectProductCommand = ReactiveCommand.CreateFromTask(() => SelectProductAsync());
+
+            var canRemoveProduct = this.WhenAnyValue(x => x.SelectedProduct)
+                .Select(x => x != null);
+
+            RemoveProductCommand = ReactiveCommand.Create(() =>
+                _orderItemsSource.Remove(SelectedProduct), canRemoveProduct);
 
             AddCustomProductCommand = ReactiveCommand.CreateFromObservable(() =>
             {
