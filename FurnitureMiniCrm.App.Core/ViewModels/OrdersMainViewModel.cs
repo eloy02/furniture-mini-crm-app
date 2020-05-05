@@ -93,6 +93,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                 this.WhenAnyValue(x => x.SelectedOrder)
                     .Do(_ => _orderItemsSource.Clear())
                     .Where(order => order != null)
+                    .Where(order => order.Products != null && order.Products.Count > 0)
                     .Select(order => order.Products)
                     .Subscribe(orderItems => _orderItemsSource.AddOrUpdate(orderItems))
                     .DisposeWith(disposables);
@@ -100,6 +101,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
                 this.WhenAnyValue(x => x.SelectedOrder)
                     .Do(_ => _customOrderItemsSource.Clear())
                     .Where(order => order != null)
+                    .Where(order => order.CustomProducts != null && order.CustomProducts.Count > 0)
                     .Select(order => order.CustomProducts)
                     .Subscribe(items => _customOrderItemsSource.AddOrUpdate(items))
                     .DisposeWith(disposables);
