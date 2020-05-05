@@ -120,7 +120,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
         public ClientModel SelectedClient { get; set; }
 
         [Reactive]
-        public ObservableCollection<OrderStatusModel> OrderStatuses { get; set; }
+        public ObservableCollection<OrderStatusModel> OrderStatuses { get; set; } = new ObservableCollection<OrderStatusModel>();
 
         [Reactive]
         public OrderStatusModel SelectedOrderStatus { get; set; }
@@ -271,7 +271,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
                 this.WhenAnyValue(x => x.OrderStatuses)
                     .Where(statuses => statuses != null)
-                    .Where(_ => Order.Status is null)
+                    .Where(_ => Order != null && Order.Status is null)
                     .Select(statuses => statuses.FirstOrDefault())
                     .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(status => SelectedOrderStatus = status)
@@ -279,7 +279,7 @@ namespace FurnitureMiniCrm.App.Core.ViewModels
 
                 this.WhenAnyValue(x => x.OrderStatuses)
                     .Where(statuses => statuses != null)
-                    .Where(_ => Order.Status != null)
+                    .Where(_ => Order != null && Order.Status != null)
                     .Select(statuses => statuses.SingleOrDefault(st => st.Id == Order.Status.Id))
                     .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(status => SelectedOrderStatus = status)
